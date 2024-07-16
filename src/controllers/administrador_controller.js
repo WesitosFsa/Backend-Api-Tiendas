@@ -1,5 +1,5 @@
 import Administrador from "../models/administrador.js"
-import { sendMailToUser, sendMailToRecoveryPassword } from "../config/nodemailer.js"
+import { sendMailToUser, sendMailToRecoveryPassword, sendMailToRecoveryPasswordAd } from "../config/nodemailer.js"
 import generarJWT from "../helpers/crearJWT.js"
 import mongoose from "mongoose";
 
@@ -57,7 +57,7 @@ const recuperarPassword = async(req,res)=>{
     if(!AdministradorBDD) return res.status(404).json({msg:"Lo sentimos, no no se encuentra registrado"})
     const token = AdministradorBDD.crearToken()
     AdministradorBDD.token=token
-    await sendMailToRecoveryPassword(email,token)
+    await sendMailToRecoveryPasswordAd(email,token)
     await AdministradorBDD.save()
     res.status(200).json({msg:"Revisa tu correo electrónico para reestablecer tu cuenta"})
 }
