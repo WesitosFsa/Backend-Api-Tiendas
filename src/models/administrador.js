@@ -18,10 +18,10 @@ const AdministradorSchema = new Schema({
         type:String,
         default:null
     },
-    Verificado:{
+    confirmEmail:{
         type:Boolean,
         default:false
-    },
+    }
 },{
     timestamps:true
 })
