@@ -1,5 +1,5 @@
 import Administrador from "../models/administrador.js"
-import { sendMailToUser, sendMailToRecoveryPassword, sendMailToRecoveryPasswordAd } from "../config/nodemailer.js"
+import { sendMailToUser, sendMailToRecoveryPasswordAd, sendMailToRecoveryPasswordAd } from "../config/nodemailer.js"
 import generarJWT from "../helpers/crearJWT.js"
 import mongoose from "mongoose";
 
