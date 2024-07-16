@@ -32,7 +32,7 @@ const router =Router()
 
 router.post('/usuario/login',login) //OK
 router.post('/usuario/registro',registro) //OK
-router.get('/confirmar/:token',confirmEmail) //OK
+router.get('usuario/confirmar/:token',confirmEmail) //OK
 router.post('/usuario/recuperar-password',recuperarPassword) //OK
 router.get('/usuario/recuperar-password/:token',comprobarTokenPasword) //OK
 router.post('/usuario/nuevo-password/:token',nuevoPassword) //OK

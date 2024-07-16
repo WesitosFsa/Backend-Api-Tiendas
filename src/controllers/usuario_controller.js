@@ -2,7 +2,7 @@
 import Usuario from "../models/usuario.js"
 import Tienda from "../models/tienda.js"
 import Producto from "../models/producto.js"
-import { sendMailToAdmin,sendMailToUser, sendMailToRecoveryPassword } from "../config/nodemailer.js"
+import { sendMailToAdmin,sendMailToUser2, sendMailToRecoveryPassword } from "../config/nodemailer.js"
 import generarJWT from "../helpers/crearJWT.js"
 import mongoose from "mongoose";
 
@@ -20,7 +20,7 @@ const registro = async (req,res)=>{
     const token = nuevoUsuario.crearToken()
     //const tokentienda = nuevoUsuario.crearTokentienda()
     //variableGlobal = tokentienda
-    await sendMailToUser(email,token)
+    await sendMailToUser2(email,token)
     await nuevoUsuario.save()
 
     res.status(200).json({msg:"Revisa tu correo electrónico para confirmar tu cuenta"})

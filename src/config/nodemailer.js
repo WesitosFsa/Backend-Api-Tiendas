@@ -31,6 +31,24 @@ const sendMailToUser = (userMail, token) => {
         }
     });
 };
+const sendMailToUser2 = (userMail, token) => {
+
+    let mailOptions = {
+        from: process.env.USER_MAILTRAP,
+        to: userMail,
+        subject: "Verifica tu cuenta",
+        html: `<p>Hola, haz clic <a href="${process.env.URL_BACKEND}usuario/confirmar/${encodeURIComponent(token)}">aquí</a> para confirmar tu cuenta.</p>`
+    };
+    
+
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Correo enviado: ' + info.response);
+        }
+    });
+};
 const sendMailToAdmin = (userMail, tokentienda) => {
 
     let mailOptions = {
