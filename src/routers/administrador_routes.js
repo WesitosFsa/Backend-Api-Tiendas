@@ -11,13 +11,15 @@ import {
     listarTiendas,
     listarproductosIDtienda,
     listarproductosporID,
-    listarproductosporCategoria
+    listarproductosporCategoria,
+    confirmEmail
 } from "../controllers/administrador_controller.js";
 const router =Router()
 
 
 router.post('/registro',registro)
 router.post('/login',login)
+router.get('/confirmar/:token',confirmEmail)
 router.post('/recuperar-password',recuperarPassword)
 router.get('/recuperar-password/:token',comprobarTokenPasword)
 router.post('/nuevo-password/:token',nuevoPassword)

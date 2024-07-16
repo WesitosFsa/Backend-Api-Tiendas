@@ -142,6 +142,19 @@ const listarproductosporCategoria = async (req, res) => {
         console.log(error);
     }
 };//BIEN
+const confirmEmail = async (req,res)=>{
+    //: ACTIVIDAD 1
+    if(!(req.params.token)) return res.status(400).json({msg:"Lo sentimos, no se puede validar la cuenta"})
+
+    const administradorBDD = await Administrador.findOne({token:req.params.token})
+    if(!administradorBDD?.token) return res.status(404).json({msg:"Algo ha ocurrido, parece que la cuenta ya ha sido confirmada"})
+
+    administradorBDD.token = null
+    administradorBDD.confirmEmail=true
+    await administradorBDD.save()
+
+    res.status(200).json({msg:"Felicidades su cuenta ha sido confirmada, puede iniciar sesion"}) 
+} // * BIEN
 
 export {
     login,
@@ -154,5 +167,6 @@ export {
     listarTiendas,
     listarproductosIDtienda,
     listarproductosporID,
-    listarproductosporCategoria
+    listarproductosporCategoria,
+    confirmEmail
 }
