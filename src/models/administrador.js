@@ -14,6 +14,14 @@ const AdministradorSchema = new Schema({
         type:String,
         require:true
     },
+    token:{
+        type:String,
+        default:null
+    },
+    Verificado:{
+        type:Boolean,
+        default:false
+    },
 },{
     timestamps:true
 })
