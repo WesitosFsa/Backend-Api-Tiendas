@@ -214,6 +214,7 @@ export default sendMailToUser
 
 export {
     sendMailToUser,
+    sendMailToUser2,
     sendMailToRecoveryPassword,
     sendMailToRecoveryPasswordAd,
     sendMailToAdmin
