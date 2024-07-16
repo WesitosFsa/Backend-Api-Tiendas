@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 
 mongoose.set('strictQuery', true)
-
+// Change to local
 const connection = async()=>{
     try {
         const {connection} = await mongoose.connect(process.env.MONGODB_URI_PRODUCTION)
