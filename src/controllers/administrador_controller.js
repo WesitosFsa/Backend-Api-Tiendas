@@ -3,6 +3,7 @@ import { sendMailToUser, sendMailToRecoveryPasswordAd } from "../config/nodemail
 import generarJWT from "../helpers/crearJWT.js"
 import mongoose from "mongoose";
 import Tienda from "../models/tienda.js"
+import Producto from "../models/producto.js"
 // * rutas administrador
 // !
 
