@@ -15,11 +15,14 @@ app.set('port', process.env.PORT || 3000)
 
 // Configuración específica de CORS
 const corsOptions = {
-  origin: 'https://fronend-quito-tech.onrender.com', // Reemplaza con el dominio de tu frontend
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
-  allowedHeaders: ['Content-Type', 'Authorization'], // Cabeceras permitidas
-};
-app.use(cors(corsOptions))
+    origin: 'https://fronend-quito-tech.onrender.com',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'], // Añade cualquier otra cabecera personalizada que estés usando
+    credentials: true, // Si necesitas enviar cookies
+  };
+  
+  app.use(cors(corsOptions));
+  
 
 // Middlewares
 app.use(express.json())
