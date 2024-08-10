@@ -12,12 +12,17 @@ dotenv.config()
 
 // Configuraciones
 app.set('port', process.env.PORT || 3000)
-app.use(cors())
+
+// Configuración específica de CORS
+const corsOptions = {
+  origin: 'https://fronend-quito-tech.onrender.com', // Reemplaza con el dominio de tu frontend
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
+  allowedHeaders: ['Content-Type', 'Authorization'], // Cabeceras permitidas
+};
+app.use(cors(corsOptions))
 
 // Middlewares
 app.use(express.json())
-
-// Variables globales
 
 // Rutas
 app.get('/', (req, res) => {
@@ -26,7 +31,6 @@ app.get('/', (req, res) => {
 app.use('/api', routerAdministrador)
 app.use('/api', routerUsuario)
 app.use('/api', routerProducto)
-
 
 // Manejo de una ruta que no sea encontrada
 app.use((req, res) => res.status(404).send("Endpoint no encontrado - 404"))
