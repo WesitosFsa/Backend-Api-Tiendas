@@ -1,42 +1,31 @@
-// Requerir los módulos
-import express from 'express'
-import dotenv from 'dotenv'
-import cors from 'cors'
-import routerAdministrador from './routers/administrador_routes.js'
-import routerUsuario from './routers/usuario_routes.js'
-import routerProducto from './routers/productos_routes.js'
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import routerAdministrador from './routers/administrador_routes.js';
+import routerUsuario from './routers/usuario_routes.js';
+import routerProducto from './routers/productos_routes.js';
 
-// Inicializaciones
-const app = express()
-dotenv.config()
+const app = express();
+dotenv.config();
 
-// Configuraciones
-app.set('port', process.env.PORT || 3000)
-
-// Configuración específica de CORS
 const corsOptions = {
-    origin: 'https://fronend-quito-tech.onrender.com',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'], // Añade cualquier otra cabecera personalizada que estés usando
-    credentials: true, // Si necesitas enviar cookies
-  };
-  
-  app.use(cors(corsOptions));
-  
+  origin: 'https://fronend-quito-tech.onrender.com', // Cambia esto al dominio de tu frontend
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
 
-// Middlewares
-app.use(express.json())
+app.use(cors(corsOptions));
 
-// Rutas
+app.set('port', process.env.PORT || 3000);
+app.use(express.json());
+
 app.get('/', (req, res) => {
-    res.send("Server on")
-})
-app.use('/api', routerAdministrador)
-app.use('/api', routerUsuario)
-app.use('/api', routerProducto)
+  res.send("Server on");
+});
+app.use('/api', routerAdministrador);
+app.use('/api', routerUsuario);
+app.use('/api', routerProducto);
 
-// Manejo de una ruta que no sea encontrada
-app.use((req, res) => res.status(404).send("Endpoint no encontrado - 404"))
+app.use((req, res) => res.status(404).send("Endpoint no encontrado - 404"));
 
-// Exportar la instancia de express por medio de app
-export default app
+export default app;
