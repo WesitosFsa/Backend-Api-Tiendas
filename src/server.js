@@ -9,7 +9,7 @@ const app = express();
 dotenv.config();
 
 const corsOptions = {
-  origin: 'https://fronend-quito-tech.onrender.com', // Cambia esto al dominio de tu frontend
+  origin: 'https://fronend-quito-tech.onrender.com/', // Cambia esto al dominio de tu frontend
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
