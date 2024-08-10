@@ -8,13 +8,12 @@ import routerProducto from './routers/productos_routes.js';
 const app = express();
 dotenv.config();
 
-const corsOptions = {
-  origin: 'https://fronend-quito-tech.onrender.com', // Cambia esto al dominio de tu frontend
+// Configuración de CORS para permitir todos los orígenes
+app.use(cors({
+  origin: '*', // Permitir solicitudes de cualquier origen
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-};
-
-app.use(cors(corsOptions));
+}));
 
 app.set('port', process.env.PORT || 3000);
 app.use(express.json());
