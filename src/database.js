@@ -4,7 +4,7 @@ mongoose.set('strictQuery', true)
 // Change to local
 const connection = async()=>{
     try {
-        const {connection} = await mongoose.connect(process.env.MONGODB_URI_PRODUCTION)
+        const {connection} = await mongoose.connect(process.env.MONGODB_URI)
         console.log(`Database is connected on ${connection.host} - ${connection.port}`)
     } catch (error) {
         console.log(error);

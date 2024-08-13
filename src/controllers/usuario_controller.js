@@ -127,7 +127,8 @@ const login = async(req,res)=>{
         direccion,
         telefono,
         _id,
-        email:usuarioBDD.email})
+        email:usuarioBDD.email,
+        propietario:usuarioBDD.propietario})
 } // * BIEN
 const perfil = (req,res)=>{
     delete req.usuarioBDD.token
@@ -162,36 +163,58 @@ const confirmarTienda = async (req,res)=>{
     await usuario.save();
     res.status(200).json({msg:"Negocio verificado, la tienda ha sido aprovada!"}) 
 } // * BIEN
-const solicitarTienda = async(req,res) => {
-    // actividad 1
-    const {id_usuario,Nombre_tienda,Direccion, email} = req.body
-    const usuarioBDD = await Usuario.findById(id_usuario)
-    // const tokentienda = await Usuario.findOne({tokentienda:req.params.tokentienda})
-    //const usuario = await Usuario.findOne({ tokentienda });
-    //actividad 2
-    if (Object.values(req.body).includes("")) return res.status(400).json({msg:"Lo sentimos, debes llenar todos los campos"})
+const solicitarTienda = async (req, res) => {
+    try {
+        // Extraer datos del cuerpo de la solicitud
+        const { Nombre_tienda, Direccion, email } = req.body;
 
-    const verificarEmailBDD = await Usuario.findOne({email})
-    if(!verificarEmailBDD) return res.status(400).json({msg:"Lo sentimos debe ser un email valido"})
-    if(usuarioBDD.email !== email) return res.status(400).json({msg:"Lo sentimos debe ser un email tuyo"})
-    if(usuarioBDD.propietario === true) return res.status(404).json({msg:"Usuario ya posee una tienda"})
+        // Buscar usuario en la base de datos por email
+        const usuarioBDD = await Usuario.findOne({ email });
 
-    // const verificarEstado = usuarioBDD
-    // if(verificarEstado) return res.status(400).json({msg:"Lo sentimos, el email ya tiene registrado una tienda"})
-    const nuevatienda = new Tienda(req.body)
-    const tokentienda = usuarioBDD.crearTokentienda()
-    usuarioBDD.tokentienda=tokentienda
-    await nuevatienda.save()
-    await usuarioBDD.save()
+        // Verificar si el usuario fue encontrado
+        if (!usuarioBDD) {
+            return res.status(404).json({ msg: "Usuario no encontrado" });
+        }
 
-    await sendMailToAdmin(email,tokentienda)
-    
-    // const tokentienda = variableGlobal
-    // await nuevatienda.save()
-    res.status(200).json({msg:"Tu solicitud será revisada por nuestros administradores, pronto recibiras una confirmación!!"})
-} // * BIEN
+        // Verificar que todos los campos estén presentes
+        if (Object.values(req.body).includes("")) {
+            return res.status(400).json({ msg: "Lo sentimos, debes llenar todos los campos" });
+        }
+
+        // Verificar si el email pertenece al usuario
+        if (usuarioBDD.email !== email) {
+            return res.status(400).json({ msg: "Lo sentimos, debe ser un email tuyo" });
+        }
+
+        // Verificar si el usuario ya posee una tienda
+        if (usuarioBDD.propietario) {
+            return res.status(400).json({ msg: "Usuario ya posee una tienda" });
+        }
+
+        // Crear nueva tienda
+        const nuevaTienda = new Tienda(req.body);
+        const tokenTienda = usuarioBDD.crearTokentienda();
+        usuarioBDD.tokentienda = tokenTienda;
+
+        // Guardar los cambios en la base de datos
+        await nuevaTienda.save();
+        await usuarioBDD.save();
+
+        // Enviar correo de confirmación
+        await sendMailToAdmin(email, tokenTienda);
+
+        // Responder al cliente
+        res.status(200).json({ msg: "Tu solicitud será revisada por nuestros administradores, pronto recibirás una confirmación!!" });
+    } catch (error) {
+        // Manejar errores inesperados
+        console.error(error);
+        res.status(500).json({ msg: "Error del servidor, por favor intente nuevamente más tarde." });
+    }
+};
+
+// * BIEN
 const listarTiendas = async (req,res)=>{ 
-    const tiendas = await Tienda.find({Verificado:true}).where('Tienda').equals(req.TiendaBDD).select("-salida -createdAt -updatedAt -__v").populate('Nombre_tienda Direccion')
+    const tiendas = await Tienda.find({Verificado:true}).where('Tienda').equals(req.TiendaBDD).select("-salida -createdAt -updatedAt -__v").populate('Nombre_tienda Direccion id_usuario _id')
     res.status(200).json(tiendas)
 }// * BIEN
 const listarproductosIDtienda = async (req, res) => {
@@ -254,9 +277,21 @@ const listarTiendasproductos = async (req, res) => {
       res.status(500).json({ message: "Error al listar tiendas", error });
     }
   };
-  
-
-
+const obtenerTiendaDelUsuario = async (req, res) => {
+    const { id_usuario } = req.params;
+    
+    try {
+      const tienda = await Tienda.findOne({ id_usuario });
+      
+      if (!tienda) {
+        return res.status(404).json({ msg: 'No se encontró una tienda asociada a este usuario' });
+      }
+      
+      res.status(200).json({ tienda });
+    } catch (error) {
+      res.status(500).json({ msg: 'Error al obtener la tienda', error });
+    }
+  };
 
 
 export {
@@ -278,5 +313,6 @@ export {
     listarproductosporID,
     listarproductosporCategoria,
     listarproductosIDtienda,
-    listarTiendasproductos
+    listarTiendasproductos,
+    obtenerTiendaDelUsuario
 }
